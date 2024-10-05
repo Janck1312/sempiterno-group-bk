@@ -1,5 +1,8 @@
+import { ConfigService } from "@nestjs/config";
 import { DataTypes, Model, Sequelize } from "sequelize";
+import { ConnectiondbService } from "src/exchange/services/connection-db.service";
 
+const connection = new ConnectiondbService(new ConfigService());
 export class User extends Model {}
 
 User.init({
@@ -9,7 +12,7 @@ User.init({
     password: { type:DataTypes.STRING, allowNull: false },
     rol_id: { type: DataTypes.INTEGER, allowNull: true }
 }, { 
-    sequelize: new Sequelize(),
+    sequelize: connection.getConnection(),
     modelName:"User",
     tableName:"users"
 });
